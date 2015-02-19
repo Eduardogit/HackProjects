@@ -98,10 +98,17 @@ def SPECIFICFILES():
 
 
 def SPECIFICWORD(phrase):
-	for base, dirs, files in os.walk('/'):
-		print files
-
-
+	for base, dirs, files in os.walk('/home/desktopadmin/Documentos/Hackprojects/python/random-scripts'):
+		for single in files:
+			arch = open(single)
+			lines = arch.readlines()
+			for line in lines:
+				words = line.split()
+				for eachword in words:
+					print eachword
+					sleep(2)
+					if phrase == eachword:
+						color.infog( "WORD FOUND IN[%s]=>[%s]"%(single,base))
 
 
 
