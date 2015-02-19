@@ -10,9 +10,9 @@ document = [".doc",".pdf",".xls",".xml",".txt"]
 code     = [".html",".js",".sh",".c",".h",".py",".rb",".java",".class"]
 audio    = [".mp4",".mp3",".wav",".wma",".ogg"]
 menu     = [
-		"\t====================[ FSS ] ===================\n"
-		"\t=== [F] i l e [S] e a r c h [S] c a n n e r ===\n"
-		"\t===============================================\n"
+		"\t====================[ WFF ] =====================\n"
+		"\t=== [W] H E R E the [F] U C K is my [F] I L E ===\n"
+		"\t=================================================\n"
 		"\t      [       Select the target          ]\n\n\n"
 		"[1] FILES     					      \n"
 		"[2] FOLDERS 						  \n"
@@ -110,7 +110,7 @@ for menu_line in menu:
 while option not in search:
 	option = raw_input("SELECT OPTION \n>:")
 	if option not in search:
-		print "\nTYPE THE OPTION NUMBER\n"
+		color.info ("\nTYPE THE OPTION NUMBER\n")
 
 ### SELECTING OPTION #########
 if option   == "1":
