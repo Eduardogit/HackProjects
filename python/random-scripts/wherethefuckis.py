@@ -10,18 +10,19 @@ document = [".doc",".pdf",".xls",".xml",".txt"]
 code     = [".html",".js",".sh",".c",".h",".py",".rb",".java",".class"]
 audio    = [".mp4",".mp3",".wav",".wma",".ogg"]
 menu     = [
-		"\t====================[ WFF ] =====================\n"
-		"\t=== [W] H E R E the [F] U C K is my [F] I L E ===\n"
-		"\t=================================================\n"
-		"\t      [       Select the target          ]\n\n\n"
-		"[1] FILES     					      \n"
-		"[2] FOLDERS 						  \n"
-		"[3] SPECIFIC FILES 				      \n"
-		"[4] SPECIFIC WORD 					  \n"
-		"[5] EXTRAS PASSWORDS,LOGS,ETC 		  \n"
+		"\t====================[ WFF ] =====================",
+		"\t=== [W] H E R E the [F] U C K is my [F] I L E ===",
+		"\t=================================================",
+		"\t      [       Select the target          ]\n\n\n ",
+		"[1] FILES     					     				",
+		"[2] FOLDERS 						  				",
+		"[3] SPECIFIC FILES 				      			",
+		"[4] SPECIFIC WORD 					  				",
+		"[5] EXTRAS PASSWORDS,LOGS,ETC 		  				"
 	   ]
 search   = ['1','2','3','4']
 option   = 0
+minidb   = []
 def FILES(phrase):
 	TotalFiles = 0
 	try:
@@ -51,6 +52,8 @@ def FOLDERS(phrase):
 	
 
 def SPECIFICFILES():
+	os.system('clear')
+	color.warn("====[    S P E C I F I C  F I L E     ]===")
 	print "CHOOSE FILE TYPE"
 	file_type = raw_input("\n[1] images\n[2] document\n[3] code\n[4] audio\n\n\n>:")
 	########################### [ IMAGES  ] ###########################
@@ -62,6 +65,7 @@ def SPECIFICFILES():
 			for single in files:
 				if single.endswith(images[choose-1]):
 					color.infog( "FILE FOUND[%s]=>[%s]"%(single,base))
+
 	########################### [ DOCUMENTS  ] ###########################
 	elif file_type == "2":
 		for number,i in enumerate(document):
@@ -104,23 +108,46 @@ def SPECIFICWORD(phrase):
 
 ###### SHOW THE TITLE ###########
 for menu_line in menu:
-	color.err(menu_line)
+	if "[5] EXTRAS PASSWORDS,LOGS,ETC" in menu_line:
+		color.info(menu_line)
+	else:
+		color.err(menu_line)
+		
 
 ##### VALIDATING OPTIONS ########
 while option not in search:
 	option = raw_input("SELECT OPTION \n>:")
 	if option not in search:
-		color.info ("\nTYPE THE OPTION NUMBER\n")
+		color.info ("TYPE THE OPTION NUMBER")
 
 ### SELECTING OPTION #########
 if option   == "1":
+	os.system('clear')
+	color.warn("======[    F I L E S         ]=====")
 	phrase = raw_input("FILE NAME \n>:")
 	FILES( phrase )
 elif option == "2":
+	os.system('clear')
+	color.warn("======[    F O L D E R S     ]=====")
 	phrase = raw_input("FOLDER NAME \n>:")
 	FOLDERS(phrase)
 elif option == "3":
 	SPECIFICFILES()
 elif option == "4":
+	os.system('clear')
+	color.warn("=====[    S P E C I F I C   W O R D   ]====")
 	phrase = raw_input("WORD \n>:")
 	SPECIFICWORD(phrase)
+
+
+#############
+##TO-DO LIST
+###LINK THAT OPEN THE CURRENT FOLDER IN ALL THE FUNCTIONS
+###SPECIFIC FILES THEN LIST ALL THE EXTENSION FILES SEARCH ONE SPECIFIC
+###DO THE FINAL MENU PASSWORDS LOGS ETC
+###
+###
+###
+###
+###
+###
