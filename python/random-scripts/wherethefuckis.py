@@ -39,6 +39,10 @@ def FILES(phrase):
 ###############
 ### xdg-open [URL]
 ###############
+
+
+
+
 def FOLDERS(phrase):
 	try:
 		phrase = phrase.lower()
@@ -50,6 +54,7 @@ def FOLDERS(phrase):
 	except Exception, e:
 		raise e
 	
+
 
 def SPECIFICFILES():
 	os.system('clear')
@@ -98,22 +103,23 @@ def SPECIFICFILES():
 
 
 def SPECIFICWORD(phrase):
-	for base, dirs, files in os.walk('/home/desktopadmin/Documentos/Hackprojects/python/random-scripts'):
+	for base, dirs, files in os.walk('/'):
 		for single in files:
-			arch = open(single)
+			try:
+				arch = open(single)
+			except Exception, e:
+				break
 			lines = arch.readlines()
 			for line in lines:
 				words = line.split()
 				for eachword in words:
-					print eachword
-					sleep(2)
 					if phrase == eachword:
 						color.infog( "WORD FOUND IN[%s]=>[%s]"%(single,base))
 
 
 
+###########     MAIN     ##################
 
-###### SHOW THE TITLE ###########
 for menu_line in menu:
 	if "[5] EXTRAS PASSWORDS,LOGS,ETC" in menu_line:
 		color.info(menu_line)
@@ -128,24 +134,30 @@ while option not in search:
 		color.info ("TYPE THE OPTION NUMBER")
 
 ### SELECTING OPTION #########
-if option   == "1":
-	os.system('clear')
-	color.warn("======[    F I L E S         ]=====")
-	phrase = raw_input("FILE NAME \n>:")
-	FILES( phrase )
-elif option == "2":
-	os.system('clear')
-	color.warn("======[    F O L D E R S     ]=====")
-	phrase = raw_input("FOLDER NAME \n>:")
-	FOLDERS(phrase)
-elif option == "3":
-	SPECIFICFILES()
-elif option == "4":
-	os.system('clear')
-	color.warn("=====[    S P E C I F I C   W O R D   ]====")
-	phrase = raw_input("WORD \n>:")
-	SPECIFICWORD(phrase)
+try:
+	if option   == "1":
+		os.system('clear')
+		color.warn("======[    F I L E S         ]=====")
+		phrase = raw_input("FILE NAME \n>:")
+		FILES( phrase )
+	elif option == "2":
+		os.system('clear')
+		color.warn("======[    F O L D E R S     ]=====")
+		phrase = raw_input("FOLDER NAME \n>:")
+		FOLDERS(phrase)
+	elif option == "3":
+		SPECIFICFILES()
+	elif option == "4":
+		os.system('clear')
+		color.warn("=====[    S P E C I F I C   W O R D   ]====")
+		phrase = raw_input("WORD \n>:")
+		SPECIFICWORD(phrase)
 
+
+except KeyboardInterrupt, e:
+	color.err("\b===========[ P R O G R A M  F I N I S H E D ] ==========")
+else:
+	raise e
 
 #############
 ##TO-DO LIST
