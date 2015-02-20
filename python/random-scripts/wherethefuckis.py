@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import color
 import os
 from time import sleep
 import subprocess as sub
@@ -31,7 +30,7 @@ def FILES(phrase):
 			for filerow in files:
 				filerow = filerow.lower()
 				if phrase in filerow:
-					color.infog("[+]FILE FOUND [%s]=>[%s]"%(filerow,base))
+					infog("[+]FILE FOUND [%s]=>[%s]"%(filerow,base))
 					TotalFiles += 1
 		print "TOTAL FILES FOUND [ %i ]"%TotalFiles
 	except Exception, e:
@@ -50,7 +49,7 @@ def FOLDERS(phrase):
 			dirs = map(lambda x: x.lower(), dirs)
 			for singledir in dirs:
 				if phrase == singledir:
-					color.infog("[+]FILE FOUND [%s]=>[%s]"%(singledir,base))
+					infog("[+]FILE FOUND [%s]=>[%s]"%(singledir,base))
 	except Exception, e:
 		raise e
 	
@@ -58,7 +57,7 @@ def FOLDERS(phrase):
 
 def SPECIFICFILES():
 	os.system('clear')
-	color.warn("====[    S P E C I F I C  F I L E     ]===")
+	warn("====[    S P E C I F I C  F I L E     ]===")
 	print "CHOOSE FILE TYPE"
 	file_type = raw_input("\n[1] images\n[2] document\n[3] code\n[4] audio\n\n\n>:")
 	########################### [ IMAGES  ] ###########################
@@ -69,7 +68,7 @@ def SPECIFICFILES():
 		for base,dirs,files in os.walk('/home/desktopadmin/Imágenes'):
 			for single in files:
 				if single.endswith(images[choose-1]):
-					color.infog( "FILE FOUND[%s]=>[%s]"%(single,base))
+					infog( "FILE FOUND[%s]=>[%s]"%(single,base))
 
 	########################### [ DOCUMENTS  ] ###########################
 	elif file_type == "2":
@@ -79,7 +78,7 @@ def SPECIFICFILES():
 		for base,dirs,files in os.walk('/'):
 			for single in files:
 				if single.endswith(document[choose-1]):
-					color.infog( "FILE FOUND[%s]=>[%s]"%(single,base))
+					infog( "FILE FOUND[%s]=>[%s]"%(single,base))
 	########################### [ CODE  ] ###########################
 	elif file_type == "3":
 		for number,i in enumerate(code):
@@ -88,7 +87,7 @@ def SPECIFICFILES():
 		for base,dirs,files in os.walk('/'):
 			for single in files:
 				if single.endswith(code[choose-1]):
-					color.infog( "FILE FOUND[%s]=>[%s]"%(single,base))
+					infog( "FILE FOUND[%s]=>[%s]"%(single,base))
 	########################### [ AUDIO  ] ###########################
 	elif file_type == "4":
 		for number,i in enumerate(audio):
@@ -97,7 +96,7 @@ def SPECIFICFILES():
 		for base,dirs,files in os.walk('/'):
 			for single in files:
 				if singlengle.endswith(audio[choose-1]):
-					color.infog( "FILE FOUND[%s]=>[%s]"%(single,base))
+					infog( "FILE FOUND[%s]=>[%s]"%(single,base))
 
 
 
@@ -114,7 +113,36 @@ def SPECIFICWORD(phrase):
 				words = line.split()
 				for eachword in words:
 					if phrase == eachword:
-						color.infog( "WORD FOUND IN[%s]=>[%s]"%(single,base))
+						infog( "WORD FOUND IN[%s]=>[%s]"%(single,base))
+
+
+HEADER = '\033[95m'
+OKBLUE = '\033[94m'
+OKGREEN = '\033[92m'
+WARNING = '\033[93m'
+FAIL = '\033[91m'
+ENDC = '\033[0m'
+BOLD = "\033[1m"
+
+def disable():
+    HEADER = ''
+    OKBLUE = ''
+    OKGREEN = ''
+    WARNING = ''
+    FAIL = ''
+    ENDC = ''
+
+def infog( msg):
+    print OKGREEN + msg + ENDC
+
+def info( msg):
+    print OKBLUE + msg + ENDC
+
+def warn( msg):
+    print WARNING + msg + ENDC
+
+def err( msg):
+    print FAIL + msg + ENDC
 
 
 
@@ -122,40 +150,40 @@ def SPECIFICWORD(phrase):
 
 for menu_line in menu:
 	if "[5] EXTRAS PASSWORDS,LOGS,ETC" in menu_line:
-		color.info(menu_line)
+		info(menu_line)
 	else:
-		color.err(menu_line)
+		err(menu_line)
 		
 
 ##### VALIDATING OPTIONS ########
 while option not in search:
 	option = raw_input("SELECT OPTION \n>:")
 	if option not in search:
-		color.info ("TYPE THE OPTION NUMBER")
+		info ("TYPE THE OPTION NUMBER")
 
 ### SELECTING OPTION #########
 try:
 	if option   == "1":
 		os.system('clear')
-		color.warn("======[    F I L E S         ]=====")
+		warn("======[    F I L E S         ]=====")
 		phrase = raw_input("FILE NAME \n>:")
 		FILES( phrase )
 	elif option == "2":
 		os.system('clear')
-		color.warn("======[    F O L D E R S     ]=====")
+		warn("======[    F O L D E R S     ]=====")
 		phrase = raw_input("FOLDER NAME \n>:")
 		FOLDERS(phrase)
 	elif option == "3":
 		SPECIFICFILES()
 	elif option == "4":
 		os.system('clear')
-		color.warn("=====[    S P E C I F I C   W O R D   ]====")
+		warn("=====[    S P E C I F I C   W O R D   ]====")
 		phrase = raw_input("WORD \n>:")
 		SPECIFICWORD(phrase)
 
 
 except KeyboardInterrupt, e:
-	color.err("\b===========[ P R O G R A M  F I N I S H E D ] ==========")
+	err("\b===========[ P R O G R A M  F I N I S H E D ] ==========")
 else:
 	raise e
 
