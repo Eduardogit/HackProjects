@@ -1,0 +1,638 @@
+INTRODUCCIÓN
+
+Un equipo de cómputo consta de dispositivos físicos llamados de forma global hardware, y componentes lógicos llamados software. Existen herramientas que permiten identificar ambas partes, ya sea para conocer las características del equipo como para medir su desempeño y/ó diagnosticar posibles fallas.
+
+Cuando existe la necesidad de solicitar apoyo en la resolución d
+
+    dijo:# lshw | grep -i audio | grep product
+
+e problemas es importante el poder aportar toda la información que sea posible y necesaria sobre el hardware y software que conforman el equipo.
+
+CONVENCIONES
+
+Al ejecutar los comandos se debe observar que el signo $ al inicio de la línea indica que el comando se puede ejecutar con cualquier usuario ordinario, por ejemplo:
+
+    $ free -o -m
+
+
+
+Mientras que signo # al inicio de la línea indica que el comando se debe ejecutar con el usuario root, por ejemplo:
+
+    # fdisk -l
+
+
+
+En algunos comandos la información resultante excede la altura de la pantalla, así que para facilitar la lectura de dicha información se usa el paginador less y de esta manera es posible desplazarse hacia abajo y hacia arriba visualizando toda la información. Para salir del paginador simplemente se presiona la tecla Q (quit). A continuación 2 ejemplos de cómo se usará dicho paginador:
+
+    $ dmesg | less
+
+
+
+y
+
+    $ less /etc/apt/sources.list
+
+
+
+INFORMACIÓN DEL FABRICANTE Y DEL MODELO
+
+Fabricante del equipo:
+
+    # dmidecode -s system-manufacturer
+
+
+
+Nombre del producto:
+
+    # dmidecode -s system-product-name
+
+
+
+Versión del producto:
+
+    # dmidecode -s system-version
+
+
+
+Número de serie del equipo:
+
+    # dmidecode -s system-serial-number
+
+
+
+SKU (Stock Keeping Unit) ó P/N (Part Number) del producto:
+
+    # dmidecode | grep -i sku
+
+
+
+Más información detallada:
+
+    # dmidecode
+
+
+
+INFORMACIÓN DEL PROCESADOR
+
+Mostrar el nombre del fabricante, modelo, y velocidad:
+
+    $ grep 'vendor_id' /proc/cpuinfo ; grep 'model name' /proc/cpuinfo ; grep 'cpu MHz' /proc/cpuinfo
+
+
+
+Mostrar la arquitectura (32 o 64 bits):
+
+    # lshw -C CPU | grep width
+
+
+
+Nota: El paquete lshw no está instalado de manera predeterminada, por lo que antes de usarlo es necesaria su instalación.
+
+Mostrar el tipo de máquina:
+
+    $ uname -m
+
+
+
+Mostrar si el procesador soporta "Extensiones de Virtualización" (Intel-VT ó AMD-V), las cuales se activan desde la configuración de BIOS del equipo:
+
+Si el procesador es Intel, se necesita saber si aparece el valor "vmx":
+
+    $ grep -i vmx /proc/cpuinfo
+
+
+
+Si el procesador es AMD, se necesita saber si aparece el valor "svm":
+
+    $ grep -i svm /proc/cpuinfo
+
+
+
+INFORMACIÓN DE LA BATERÍA
+
+    $ acpi -bi
+
+
+
+o
+
+    $ acpitool -B
+
+
+Nota: el comando acpitool no se encuentra instalado de forma predeterminada.
+
+MEMORIA RAM Y PARTICIÓN SWAP
+
+Mostrar el total de memoria RAM y la partición swap (cambiar el último parámetro por: -b = Bytes, -k = Kilobytes, -m = Megabytes, -g = Gigabytes, según convenga):
+
+    $ free -o -m
+
+
+
+y otra forma de hacerlo es así:
+
+    $ grep 'MemTotal' /proc/meminfo; grep 'SwapTotal' /proc/meminfo
+
+
+
+Para mostrar en qué partición (y el tamaño) está swap:
+
+    # swapon -s
+
+
+
+KERNEL
+
+Mostrar el nombre y versión del kernel:
+
+    $ uname -sr
+
+
+
+SHELL
+
+Mostrar el shell en uso:
+
+    $ echo $SHELL
+
+
+
+DISTRIBUCIÓN
+
+Mostrar el nombre, versión y nombre clave de la distribución:
+
+    $ lsb_release -idc
+
+
+
+
+ENTORNO DEL USUARIO
+
+Nombre del usuario actual:
+
+    $ echo $USER
+
+
+
+Nombre del equipo:
+
+    $ echo $HOSTNAME
+
+
+
+Directorio base del usuario actual:
+
+    $ echo $HOME
+
+
+
+Directorio de trabajo actual:
+
+    $ echo $PWD
+
+
+
+o
+
+    $ pwd
+
+
+
+DISPOSITIVOS FÍSICOS (HARDWARE)
+
+Listar los dispositivos PCI / PCIe
+
+    $ lspci
+
+
+
+Listar todos los dispositivos PCMCIA(En mi Debian no se encontro este archivo pero lo dejo por las dudas..!)
+
+    $ /sbin/lspcmcia 
+
+
+
+Listar todos los dispositivos USB:
+
+    $ lsusb
+
+
+
+Listar todos los dispositivos detectados como SCSI:
+
+    $ lsscsi
+
+
+
+Nota: El paquete anterior no está instalado de manera predeterminada, por lo que antes de usarlo es necesaria su instalación.
+
+Módulos que se han indicado al kernel que cargue durante el arranque:
+
+    $ cat /etc/modules
+
+
+
+Listar todos los módulos que cargó el sistema:
+
+    $ lsmod | less
+
+
+
+Listar el hardware (información resumida):
+
+    # lshw -short
+
+
+
+Listar el hardware (información extensa):
+
+    # lshw | less
+
+
+
+Nota: El paquete lshw no está instalado de manera predeterminada, por lo que antes de usarlo es necesaria su instalación.
+
+MEDIOS DE ALMACENAMIENTO, ARRANQUE
+
+Listar las particiones en los medios de almacenamiento:
+
+    # fdisk -l
+
+
+
+Conocer el espacio usado y disponible en las particiones:
+
+    $ df -h
+
+
+
+Conocer en qué partición (y el tamaño) está swap:
+
+    # swapon -s
+
+
+
+Mostrar las entradas registradas para el gestor de arranque GRUB "Legacy" (hasta la versión 0.97):
+
+    # grep -i title /boot/grub/menu.lst | grep "#" -v
+
+
+
+Mostrar las entradas registradas para el gestor de arranque GRUB 2:
+
+    # grep -i menuentry /boot/grub/grub.cfg | grep "#" -v
+
+
+
+Mostrar la tabla de particiones (File System TABle) que el sistema monta automáticamente durante el arranque:
+
+    $ less /etc/fstab
+
+
+
+Mostrar el valor UUID (Universally Unique IDentifier) de todas las particiones:
+
+    # blkid
+
+
+
+REDES
+
+Listar los dispositivos de red alámbricos PCI:
+
+    $ lspci | grep -i ethernet
+
+
+
+Listar los dispositivos de red inalámbricos PCI:
+
+    $ lspci | grep -i network
+
+
+
+Listar los dispositivos de red USB:
+
+    $ lsusb | grep -i ethernet ; lsusb | grep -i network
+
+
+
+Mostrar los módulos cargados por el sistema, para controlar tarjetas de red inalámbricas:
+
+    $ lsmod | grep iwl
+
+
+
+Mostrar información del controlador usado por un dispositivo de red específico (se debe sustituir la palabra interfaz por el nombre lógico de la tarjeta de red, por ejemplo eth0, wlan0, ath0, etc.):
+
+    # ethtool -i interfaz
+
+
+
+Nota: El paquete anterior no está instalado de manera predeterminada, por lo que antes de usarlo es necesaria su instalación.
+
+Configuración de las tarjetas de red y sus direcciones IP asignadas:
+
+    $ cat /etc/network/interfaces
+
+
+
+Resolución de Nombres de Dominio:
+
+    $ cat /etc/resolv.conf
+
+
+
+Mostrar el contenido del archivo HOSTS:
+
+    $ cat /etc/hosts
+
+
+
+Nombre del equipo, tal y como se verá en la red local:
+
+    $ cat /etc/hostname
+
+
+
+o
+
+    $ grep 127.0.1.1 /etc/hosts
+
+
+
+o
+
+    $ echo $HOSTNAME
+
+
+
+Direcciones IP locales de las tarjetas de red alámbricas (resumen):
+
+    $ /sbin/ifconfig | grep -i direc | grep -i bcast
+
+
+
+si el sistema está en inglés se usa:
+
+    $ /sbin/ifconfig | grep -i addr | grep -i bcast
+
+
+
+Direcciones IP locales de las tarjetas de red alámbricas (detalle):
+
+    $ /sbin/ifconfig
+
+
+
+Direcciones IP locales de las tarjetas de red inalámbricas (resumen):
+
+    $ /sbin/iwconfig | grep -i direc | grep -i bcast
+
+
+
+si el sistema está en inglés se usa:
+
+    $ /sbin/iwconfig | grep -i addr | grep -i bcast
+
+
+
+Direcciones IP locales de las tarjetas de red inalámbricas (detalle):
+
+    $ /sbin/iwconfig
+
+
+
+Mostrar la tabla de enrutamiento:
+
+    # route -n
+
+
+
+Para conocer la dirección IP pública (externa):
+
+    $ curl ip.appspot.com
+
+
+
+REPOSITORIOS / ACTUALIZACIONES DEL SISTEMA
+
+"Unicamente en distros basadas en Debian"
+
+Visualizar el contenido del archivo sources.list, el cual contiene las direcciones de los repositorios:
+
+    $ less /etc/apt/sources.list
+
+
+
+VIDEO
+
+Listar las tarjetas de vídeo (PCI / PCIe):
+
+    $ lspci | grep -i vga
+
+
+
+Para determinar si el equipo soporta aceleración de gráficos es necesario que esté instalado el paquete de herramientas mesa-utils. Dicho paquete contiene el comando glxinfo:
+
+    $ glxinfo | grep -i render
+
+
+
+Para calcular los FPS (frames per second) se ejecuta el siguiente comando:
+
+    $ timeout 60 glxgears
+
+
+
+el cual mostrará durante 60 segundos (con la ayuda del comando timeout) una ventana pequeña con una animación de 3 engranajes, mientras que al mismo tiempo en la ventana de la terminal se mostrarán los valores promedios de fotogramas por segundo (FPS, frames per second):
+
+Ejemplo del desempeño gráfico de un sistema:
+
+    338 frames in 5.4 seconds = 62.225 FPS
+    280 frames in 5.1 seconds = 55.343 FPS
+    280 frames in 5.2 seconds = 54.179 FPS
+    280 frames in 5.2 seconds = 53.830 FPS
+    280 frames in 5.3 seconds = 53.211 FPS
+    338 frames in 5.4 seconds = 62.225 FPS
+    280 frames in 5.1 seconds = 55.343 FPS
+    280 frames in 5.2 seconds = 54.179 FPS
+    280 frames in 5.2 seconds = 53.830 FPS
+    280 frames in 5.3 seconds = 53.211 FPS
+
+
+
+Ejemplo de un mejor desempeño gráfico en otro sistema:
+
+    2340 frames in 5.0 seconds = 467.986 FPS
+    2400 frames in 5.0 seconds = 479.886 FPS
+    2080 frames in 5.0 seconds = 415.981 FPS
+    2142 frames in 5.0 seconds = 428.346 FPS
+    2442 frames in 5.0 seconds = 488.181 FPS
+    2295 frames in 5.0 seconds = 458.847 FPS
+    2298 frames in 5.0 seconds = 459.481 FPS
+    2416 frames in 5.0 seconds = 483.141 FPS
+    2209 frames in 5.0 seconds = 441.624 FPS
+    2437 frames in 5.0 seconds = 487.332 FPS
+
+
+
+Para mostrar la configuración actual del servidor X (X Window System)En mi Debian no se encontro este archivo pero lo dejo por las dudas..!)
+
+    $ less /etc/X11/xorg.conf
+
+
+
+Para conocer la resolución actual (anchura x altura) y frecuencia de barrido (MHz):
+
+    $ xrandr | grep '*'
+
+
+
+Para conocer todas las resoluciones que la configuración actual soporta:
+
+    $ xrandr
+
+
+
+Para mostrar las cámaras web (USB):
+
+    $ lsusb | grep -i camera
+
+
+
+El siguiente ejemplo muestra el resultado de 2 cámaras web conectadas a un mismo equipo:
+
+    Bus 001 Device 003: ID 0c45:62c0 Microdia Sonix USB 2.0 Camera
+    Bus 002 Device 004: ID 0ac8:3420 Z-Star Microelectronics Corp. Venus USB2.0 Camera
+
+
+
+Las cámaras web se "montan" en orden consecutivo en la ruta /dev/ :
+
+    Bus 001 ---> /dev/video0
+    Bus 002 ---> /dev/video1
+    Bus 003 ---> /dev/video2
+    [...]
+
+
+
+Para comprobar que las cámaras web se han "montado" en su ruta correspondiente:
+
+    $ ls /dev/video* -lh
+
+
+
+AUDIO
+
+Listar hardware de audio:
+
+    $ lspci | grep -i audio
+
+
+
+ó
+
+# lshw | grep -i audio | grep product
+
+Nota: El paquete anterior no está instalado de manera predeterminada, por lo que antes de usarlo es necesaria su instalación.
+
+Listar los dispositivos de reproducción de audio:
+
+    $ aplay -l | grep -i tarjeta
+
+
+
+si el sistema está en inglés entonces se usa:
+
+    $ aplay -l | grep -i card
+
+
+
+Listar todos los módulos que cargó el sistema, para ser usados por los dispositivos de sonido:
+
+    $ lsmod | grep -i snd
+
+
+
+Las siguientes son pruebas para verificar si los altavoces están correctamente conectados y distribuidos. Los altavoces deben estar encendidos y durante la prueba se puede ajustar el volumen, cables, y disposición. Cada prueba emite un sonido en un ciclo, y se repite 2 veces más:
+
+Si el sistema de sonido es de 1 canal (monoaural):
+
+    $ speaker-test -l 3 -t sine -c 1
+
+
+
+Si el sistema de sonido es de 2 canales (stereo):
+
+    $ speaker-test -l 3 -t sine -c 2
+
+
+
+Si el sistema de sonido es de 5.1 canales (surround):
+
+    $ speaker-test -l 3 -t sine -c 6
+
+
+
+REGISTROS (logs)
+
+Visualizar las 30 últimas líneas del buffer del kernel:
+
+    $ dmesg | tail -30
+
+
+
+Visualizar todo el buffer del kernel:
+
+    $ dmesg | less
+
+
+
+Los registros del servidor X dan información útil sobre la configuración actual del mismo, y sobre la tarjeta de video:
+
+    $ cd /var/log/
+    $ ls Xorg* -hl
+
+
+
+ello mostrará todos los archivos de registros del servidor X, siendo el archivo Xorg.0.log el más reciente.
+
+Para ver los mensajes de error (errors) y mensajes de advertencia (warnings):
+
+    $ grep -E "(WW)|(EE)" Xorg.0.log | grep -v unknown
+
+
+
+Si se desea ver toda la información del registro:
+
+    $ less Xorg.0.log
+
+
+
+Si se desea ver el contenido de algún registro anterior al actual sólo basta sustituir el nombre de archivo Xorg.0.log por el nombre del archivo que se desee visualizar.
+
+Para visualizar el registro de arranque (boot) es necesario activarlo primeramente. Se debe abrir el archivo /etc/default/bootlogd y sustituir el valor no por yes, quedando así:
+
+    # Run bootlogd at startup ?
+    BOOTLOGD_ENABLE=yes
+
+
+
+Durante el próximo inicio del sistema se generará el archivo /var/log/boot el cual ya podrá ser revisado:
+
+    # less /var/log/boot
+
+
+
+Los registros anteriores de arranque pueden visualizarse con:
+
+    # ls /var/log/boot* -hl
+
+
+
+y consultarse como ya se ha mostrado.
+
+Para ver otros registros: La mayoría de los registros (logs) del sistema se encuentran en el directorio /var/log/, así como también en varios subdirectorios, por lo tanto sólo basta entrar a dicho directorio y realizar un listado para conocerlos:
+
+    # cd /var/log/
+    # ls -hl

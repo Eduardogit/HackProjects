@@ -95,7 +95,7 @@ def SPECIFICFILES():
 		choose = input("\n>:")
 		for base,dirs,files in os.walk('/'):
 			for single in files:
-				if singlengle.endswith(audio[choose-1]):
+				if single.endswith(audio[choose-1]):
 					infog( "FILE FOUND[%s]=>[%s]"%(single,base))
 
 
@@ -185,7 +185,7 @@ try:
 except KeyboardInterrupt, e:
 	err("\b===========[ P R O G R A M  F I N I S H E D ] ==========")
 else:
-	raise e
+	err("\b===========[ P R O G R A M  F I N I S H E D ] ==========")
 
 #############
 ##TO-DO LIST
